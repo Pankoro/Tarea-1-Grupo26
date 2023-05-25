@@ -12,20 +12,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  lastname String?
-  posts Post[]
+// model trabajos {
+//   id Int @id @default(autoincrement())
+//   descripcion String? @db.VarChar(45)
+//   sueldo Int?
+//   }
+
+// model persona_tiene_trabajo {
+//   id Int @id @default(autoincrement())
+//   trabajosId Int
+//   trabajo   trabajos   @relation(fields: [trabajosId], references: [id])
+// }
+
+// model personajes {
+//   id Int @id @default(autoincrement())
+//   nombre String
+//   fuerza Int
+//   fecha_nacimiento DateTime
+//   objeto String? @db.VarChar(30)
+// }
+
+model personajes {
+  id Int @id @default(autoincrement())
+  nombre String @db.VarChar(45)
+  fuerza Int
+  fecha_nacimiento DateTime
+  objeto String? @db.VarChar(30)
+  trabajos personaje_tiene_trabajo[]
+  kart karts[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model personaje_tiene_trabajo {
+  id_trabajo Int
+  id_personaje Int
+  fecha_inicio DateTime?  
+  fecha_termino DateTime?
+  Personajes personajes @relation(fields: [id_personaje], references: [id])
+  Trabajos trabajos @relation(fields: [id_trabajo], references: [id])
+  
+  @@id([id_trabajo, id_personaje]) 
+}
+
+model trabajos {
+  id  Int    @id @default(autoincrement())
+  descripcion String @db.VarChar(45)
+  sueldo Int
+  personajes personaje_tiene_trabajo[]
+}
+
+model karts {
+  id Int @id @default(autoincrement())
+  modelo String @db.VarChar(45)
+  color String @db.VarChar(45)
+  velocidad_maxima Int?
+  kartId Int?
+  personaje personajes? @relation(fields: [kartId], references: [id])
+}
+
+model reinos {
+  id Int @id @default(autoincrement()) 
+  nombre String @db.VarChar(45)
+  ubicacion String @db.VarChar(45)
+  superficie Int
+  diplomacia1 diplomacias[] @relation("Reino1ToDiplomacia")
+  diplomacia2 diplomacias[] @relation("Reino2ToDiplomacia")
+}
+
+model diplomacias {
+  id_reino_1 Int
+  id_reino_2 Int
+  es_aliado Boolean
+  reino1 reinos @relation("Reino1ToDiplomacia", fields: [id_reino_1], references: [id])
+  reino2 reinos @relation("Reino2ToDiplomacia", fields: [id_reino_2], references: [id])
+
+
+  @@id([id_reino_1, id_reino_2]) 
+
 }
 
