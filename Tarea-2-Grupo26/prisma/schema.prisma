@@ -12,26 +12,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model trabajos {
-//   id Int @id @default(autoincrement())
-//   descripcion String? @db.VarChar(45)
-//   sueldo Int?
-//   }
-
-// model persona_tiene_trabajo {
-//   id Int @id @default(autoincrement())
-//   trabajosId Int
-//   trabajo   trabajos   @relation(fields: [trabajosId], references: [id])
-// }
-
-// model personajes {
-//   id Int @id @default(autoincrement())
-//   nombre String
-//   fuerza Int
-//   fecha_nacimiento DateTime
-//   objeto String? @db.VarChar(30)
-// }
-
 model personajes {
   id Int @id @default(autoincrement())
   nombre String @db.VarChar(45)
@@ -40,12 +20,14 @@ model personajes {
   objeto String? @db.VarChar(30)
   trabajos personaje_tiene_trabajo[]
   kart karts[]
+
+  personaje personaje_habita_reino[]
 }
 
 model personaje_tiene_trabajo {
   id_trabajo Int
   id_personaje Int
-  fecha_inicio DateTime?  
+  fecha_inicio DateTime
   fecha_termino DateTime?
   Personajes personajes @relation(fields: [id_personaje], references: [id])
   Trabajos trabajos @relation(fields: [id_trabajo], references: [id])
@@ -76,17 +58,30 @@ model reinos {
   superficie Int
   diplomacia1 diplomacias[] @relation("Reino1ToDiplomacia")
   diplomacia2 diplomacias[] @relation("Reino2ToDiplomacia")
+
+  reino personaje_habita_reino[]
 }
 
 model diplomacias {
   id_reino_1 Int
   id_reino_2 Int
   es_aliado Boolean
+
   reino1 reinos @relation("Reino1ToDiplomacia", fields: [id_reino_1], references: [id])
   reino2 reinos @relation("Reino2ToDiplomacia", fields: [id_reino_2], references: [id])
-
 
   @@id([id_reino_1, id_reino_2]) 
 
 }
 
+model personaje_habita_reino {
+  id_personaje Int
+  id_reino Int
+  fecha_registro DateTime
+  es_gobernante Boolean
+
+  personaje personajes@relation(fields: [id_personaje], references: [id])
+  reino reinos@relation(fields: [id_reino], references: [id])
+
+  @@id([id_personaje, id_reino]) 
+}

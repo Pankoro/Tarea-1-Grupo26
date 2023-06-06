@@ -18,31 +18,17 @@ const getUserById = async (req, res) => {
 
 
 const createUser = async (req, res) => {
-    const { name, email, lastame } = req.body;
-
-    try {
-        const user = await prisma.user.create({
+    const { name, email, lastame } = req.body
+    const user = await prisma.user.create({
         data: {
             name,
             email,
             lastame
         }
-        });
-        
-        res.status(201).json(user);
-    } catch (error) {
-        if (error.code === 'P2002') {
-            res.status(400).json({ 
-            error: 'Correo ya existente en la base de datos', 
-            });
-        } else {
-        // Otros errores de la base de datos
-        res.status(500).json({ 
-            error: 'Un error inesperado ocurrió', 
-        });
-        }
-    }
+    })
+    res.json(user)
 }
+
 const usersPosts = async (req, res) => {
     const { id } = req.params
     const user = await prisma.user.findUnique({
