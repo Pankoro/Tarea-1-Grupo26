@@ -1,8 +1,14 @@
 import prisma from '../prismaClient.js'
 
 const getKarts = async (req, res) => {
-    const karts = await prisma.karts.findMany();
-    res.status(200).json(karts);
+
+    try{
+        const karts = await prisma.karts.findMany();
+        res.status(200).json(karts);
+    }
+    catch(error){
+        res.status(500).json({error: "Error al encontrar Karts"});
+    }
 }
 
 const getKartById = async (req, res) => {

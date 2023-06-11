@@ -1,12 +1,17 @@
 import prisma from '../prismaClient.js'
 
 const getPersonajes = async (req, res) => {
-    const personajes = await prisma.personajes.findMany({
-        include:{
-            kart: true
-        }
-    });
-    res.status(200).json(personajes);
+    try{
+        const personajes = await prisma.personajes.findMany({
+            include:{
+                kart: true
+            }
+        });
+        res.status(200).json(personajes);
+    }
+    catch(error){
+        res.status(500).json({error: "Error al encontrar Personajes"});
+    }
 }
 
 const getPersonajeById = async (req, res) => {
@@ -121,10 +126,17 @@ const createPersonaje = async (req, res) => {
 }
 
 const updatePersonaje = async (req, res) => {
-    const { fuerza, objeto } = req.body;
+    const { fuerza, objeto, nombre } = req.body;
     const { id } = req.params;
 
     let data = {};
+
+    if (nombre !== undefined) {
+        if (typeof objeto !== 'string') {
+            return res.status(400).json({ error: 'El nombre debe ser una cadena de caracteres.' });
+        }
+        data.nombre = nombre;
+    }
 
     if (fuerza !== undefined) {
         if (typeof fuerza !== 'number' || fuerza < 0 ) {

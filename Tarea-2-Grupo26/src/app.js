@@ -8,6 +8,8 @@ import DiplomaciasController from './controllers/DiplomaciasConstroller.js';
 import PersonajeHabitaReino from './controllers/PersonajeHabitaReino.js'
 import morgan from 'morgan';
 import personaje_tiene_trabajoController from './controllers/Personaje_tiene_trabajoController.js';
+import DefensasController from './controllers/DefensasController.js';
+import Defensas_del_reino_Controller from './controllers/Defensas_del_reino_Controller.js';
 
 const ENV = process.env;
 const app = express();
@@ -41,7 +43,7 @@ app.delete('/trabajos/:id', TrabajosController.deleteTrabajos);
 // rutas trabajos de personaje
 app.get('/trabajosPersonaje/:id', Personaje_tiene_trabajoController.getTrabajosPersonaje);
 app.post('/trabajosPersonaje/:id', Personaje_tiene_trabajoController.createTrabajosPersonaje);
-app.put('/trabajosPersonaje/:idPersonaje/:idTrabajo', Personaje_tiene_trabajoController.actualizarFechaTermino);
+app.put('/trabajosPersonaje/:id_personaje/:idTrabajo', Personaje_tiene_trabajoController.actualizarFechaTermino);
 app.delete('/trabajosPersonaje/:idPersonaje/:idTrabajo', personaje_tiene_trabajoController.eliminarAsignacionTrabajo);
 
 //rutas reinos
@@ -63,6 +65,19 @@ app.get('/personaje_habita_reino', PersonajeHabitaReino.getPersonaje_habita_rein
 app.post('/personaje_habita_reino', PersonajeHabitaReino.createPersonajeReino);
 app.put('/personaje_habita_reino/:id_personaje/:id_reino', PersonajeHabitaReino.updatePersonajeReino);
 app.delete('/personaje_habita_reino/:id_personaje/:id_reino', PersonajeHabitaReino.deletePersonajeReino);
+
+// ruta defensas
+app.get('/defensas', DefensasController.getDefensas);
+app.get('/defensas/:id', DefensasController.getDefensasById);
+app.post('/defensas', DefensasController.createDefensa);
+app.put('/defensas/:id', DefensasController.updateDefensa);
+app.delete('/defensas/:id', DefensasController.deleteDefensaById);
+
+// ruta defensas_del_reino
+app.get('/defensas_del_reino/:id', Defensas_del_reino_Controller.getReinoDefensa);
+app.post('/defensas_del_reino/:id', Defensas_del_reino_Controller.createReinoDefensa);
+app.put('/defensas_del_reino/:idDefensa/:idreino', Defensas_del_reino_Controller.actualizarFechaComienzo);
+app.delete('/defensas_del_reino/:idDefensa/:idReino', Defensas_del_reino_Controller.eliminarAsignacionReino);
 
 //==========================================================//
 app.get('/', (req, res) => {

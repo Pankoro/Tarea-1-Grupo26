@@ -7,7 +7,7 @@ const getTrabajos = async (req, res) => {
 
     }catch (error) {
         res.status(500).json({ 
-            error: error.message, 
+            error: "Error al encontrar Trabajos", 
         });
     }
 }
@@ -93,7 +93,7 @@ const deleteTrabajos = async (req, res) => {
         res.status(201).json({message: "trabajo eliminado exitosamente"});
     } catch (error){
         res.status(500).json({
-            error: error.message,
+            error:"el trabajo no existe",
         });
     };
 }

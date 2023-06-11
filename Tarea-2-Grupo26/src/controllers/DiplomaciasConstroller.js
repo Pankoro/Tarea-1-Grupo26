@@ -15,7 +15,7 @@ const getDiplomacias = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            error: error.message,
+            error: "Error al encontrar Diplomacia",
         });
     }
 }
@@ -148,7 +148,7 @@ const deleteDiplomacia = async (req, res) => {
             }
         });
 
-        res.status(200).json("La diplomacia entre ambos paises ha sido eliminada");
+        res.status(200).json("La diplomacia entre ambos reinos ha sido eliminada");
     } catch (error) {
         if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
             res.status(422).json({

@@ -27,7 +27,11 @@ const getTrabajosPersonaje = async (req, res) => {
             trabajosPersonaje = await prisma.personaje_tiene_trabajo.findMany({
                 where: {id_personaje: Number(id)},
                 include: {
-                    Trabajos: true,
+                    Trabajos: {
+                        select: {
+                            descripcion: true,
+                            sueldo: true
+                    }}
                 },
             });
         } catch (error) {
@@ -115,9 +119,11 @@ const actualizarFechaTermino = async (req, res) => {
         return res.status(400).json({ error: "La nueva fecha de término no es válida." });
     }
 
+
     if (fechaTermino !== null){
-        fecha_termino_formato = new Date(fecha_termino);
-        if (fecha_termino_formato < fecha_inicio_formato){
+        let fecha_termino_formato;
+        fecha_termino_formato = new Date(fechaTermino);
+        if (fecha_termino_formato < fecha_inicio){
             return res.status(400).json({ error: "La fecha de término debe ser posterior a la fecha de inicio." });
         }
     }

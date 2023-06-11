@@ -1,8 +1,13 @@
 import prisma from '../prismaClient.js'
 
 const getReinos = async (req, res) => {
-    const reinos = await prisma.reinos.findMany();
-    res.status(200).json(reinos);
+    try{
+        const reinos = await prisma.reinos.findMany();
+        res.status(200).json(reinos);
+    }
+    catch(error){
+        res.status(500).json({error: "Error al encontrar Reinos"});
+    }
 }
 
 const getReinoById = async (req, res) => {

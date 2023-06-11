@@ -56,10 +56,12 @@ model reinos {
   nombre String @db.VarChar(45)
   ubicacion String @db.VarChar(45)
   superficie Int
+  
   diplomacia1 diplomacias[] @relation("Reino1ToDiplomacia")
   diplomacia2 diplomacias[] @relation("Reino2ToDiplomacia")
 
   reino personaje_habita_reino[]
+  defensas defensas_del_reino[] 
 }
 
 model diplomacias {
@@ -84,4 +86,20 @@ model personaje_habita_reino {
   reino reinos@relation(fields: [id_reino], references: [id])
 
   @@id([id_personaje, id_reino]) 
+}
+
+model defensas {
+  id Int @id @default(autoincrement())
+  defensa String @db.VarChar(45)
+  reinos defensas_del_reino[] 
+}
+
+model defensas_del_reino{
+  id_defensa Int
+  id_reino Int
+  fecha_comienzo DateTime
+  defensa defensas@relation(fields: [id_defensa], references: [id])
+  reino reinos@relation(fields: [id_reino], references: [id])
+
+  @@id([id_defensa, id_reino])
 }
