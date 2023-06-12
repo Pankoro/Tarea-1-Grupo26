@@ -1,5 +1,7 @@
 import prisma from '../prismaClient.js'
 
+import {Prisma} from '@prisma/client';
+
 const getReinos = async (req, res) => {
     try{
         const reinos = await prisma.reinos.findMany();
@@ -51,7 +53,7 @@ const createReino = async (req, res) => {
 
         res.status(200).json(reino)
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
             res.status(409).json({
                 error: 'El reino ya existe.',
             });
@@ -91,7 +93,7 @@ const updateReino = async (req, res) => {
     
         res.status(200).json(reino);
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code ==='P2016'){
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code ==='P2016'){
             res.status(422).json({
                 error: 'el reino no existe.',
             });
@@ -130,7 +132,7 @@ const deleteReino = async (req, res) =>{
         res.status(200).json({message: "el reino ha sido eliminado exitosamente"});
         
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code ==='P2016'){
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code ==='P2016'){
             res.status(422).json({
                 error: 'el reino no existe.',
             });

@@ -1,5 +1,7 @@
 import prisma from '../prismaClient.js'
 
+import {Prisma} from '@prisma/client';
+
 const getKarts = async (req, res) => {
 
     try{
@@ -27,7 +29,7 @@ const getKartById = async (req, res) => {
         
         res.status(200).json(karts)
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
             res.status(422).json({
                 error: 'El coche no existe.',
             });
@@ -146,8 +148,8 @@ const updateKart = async (req, res) => {
 
         res.status(200).json(kart);
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError) {
-            if (error.code === 'P2001') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2025') {
                 return res.status(422).json({ error: 'El kart que intenta actualizar no existe.' });
             } else if (error.code === 'P2002') {
                 return res.status(409).json({ error: 'Ya existe un kart con ese modelo.' });

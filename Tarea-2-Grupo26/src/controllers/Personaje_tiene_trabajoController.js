@@ -1,5 +1,7 @@
 import prisma from '../prismaClient.js';
 
+import {Prisma} from '@prisma/client';
+
 const getTrabajosPersonaje = async (req, res) => {
     try {
         const {id} = req.params;
@@ -118,11 +120,21 @@ const actualizarFechaTermino = async (req, res) => {
     if (isNaN(fechaTermino)) {
         return res.status(400).json({ error: "La nueva fecha de término no es válida." });
     }
+    let fecha_inicio;
 
+    const getFecha_inicio = await prisma.personaje_tiene_trabajo.findMany({
+        where: {id_personaje: Number(idPersonaje)},
+                select: {
+                    fecha_inicio: true,
+                }    
+    });
+    
+    fecha_inicio = getFecha_inicio[0].fecha_inicio;
 
     if (fechaTermino !== null){
         let fecha_termino_formato;
         fecha_termino_formato = new Date(fechaTermino);
+
         if (fecha_termino_formato < fecha_inicio){
             return res.status(400).json({ error: "La fecha de término debe ser posterior a la fecha de inicio." });
         }
@@ -173,8 +185,15 @@ const actualizarFechaTermino = async (req, res) => {
         
         res.status(200).json(trabajoActualizado);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: `Ha ocurrido un error al actualizar la fecha de término del trabajo: ${error.message}` });
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            res.status(422).json({
+                error: 'La relacion entre personaje y trabajo no existe.',
+            });
+        }
+        else{
+            console.error(error);
+            res.status(500).json({ error: `Ha ocurrido un error al actualizar la fecha de término del trabajo: ${error.message}` });
+        }
     }
 };
 

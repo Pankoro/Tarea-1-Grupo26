@@ -22,7 +22,6 @@ app.use(morgan('dev'));
 // rutas personajes
 app.get('/personajes', PersonajesController.getPersonajes); 
 app.get('/personajes/:id', PersonajesController.getPersonajeById);
-app.get('/personaje/:nombre', PersonajesController.getPersonajeByNombre);
 app.post('/personajes', PersonajesController.createPersonaje);
 app.put('/personajes/:id', PersonajesController.updatePersonaje);
 app.delete('/personajes/:id', PersonajesController.deletePersonajeById,);
@@ -44,7 +43,7 @@ app.delete('/trabajos/:id', TrabajosController.deleteTrabajos);
 // rutas trabajos de personaje
 app.get('/trabajosPersonaje/:id', Personaje_tiene_trabajoController.getTrabajosPersonaje);
 app.post('/trabajosPersonaje/:id', Personaje_tiene_trabajoController.createTrabajosPersonaje);
-app.put('/trabajosPersonaje/:id_personaje/:idTrabajo', Personaje_tiene_trabajoController.actualizarFechaTermino);
+app.put('/trabajosPersonaje/:idPersonaje/:idTrabajo', Personaje_tiene_trabajoController.actualizarFechaTermino);
 app.delete('/trabajosPersonaje/:idPersonaje/:idTrabajo', personaje_tiene_trabajoController.eliminarAsignacionTrabajo);
 
 //rutas reinos

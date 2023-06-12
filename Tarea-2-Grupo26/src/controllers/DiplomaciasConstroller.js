@@ -1,5 +1,7 @@
 import prisma from '../prismaClient.js'
 
+import {Prisma} from '@prisma/client';
+
 const getDiplomacias = async (req, res) => {
 
     try {
@@ -44,7 +46,7 @@ const getDiplomaciaById = async (req, res) => {
 
         res.status(200).json(diplomacia);
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
             res.status(422).json({
                 error: 'Uno de los reinos no existe.',
             });
@@ -77,11 +79,11 @@ const createDiplomacia = async (req, res) => {
 
         res.status(200).json(diplomacia);
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
             res.status(422).json({
                 error: 'Uno de los reinos no existe.',
             });
-        } else if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        } else if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
             res.status(409).json({
                 error: 'La relación diplomática ya existe.',
             });
@@ -118,11 +120,11 @@ const updateDiplomacia = async (req, res) => {
 
         res.status(200).json(diplomacia);
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
             res.status(422).json({
                 error: 'Uno de los reinos no existe.',
             });
-        } else if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2016') {
+        } else if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2016') {
             res.status(422).json({
                 error: 'La relación diplomática que se intenta actualizar no existe.',
             });
@@ -150,11 +152,11 @@ const deleteDiplomacia = async (req, res) => {
 
         res.status(200).json("La diplomacia entre ambos reinos ha sido eliminada");
     } catch (error) {
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2001') {
             res.status(422).json({
                 error: 'Uno o más reinos no existen.',
             });
-        } else if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2016') {
+        } else if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2016') {
             res.status(422).json({
                 error: 'La relación diplomática que se intenta eliminar no existe.',
             });

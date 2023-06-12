@@ -55,35 +55,6 @@ const getPersonajeById = async (req, res) => {
     res.json({personaje, trabajo_actual: trabajo_actual.trabajos})
 };
 
-const getPersonajeByNombre = async (req, res) => {
-    try {
-        const { nombre } = req.params
-
-        if (nombre === undefined) {
-            return res.status(400).json({ error: 'El nombre es requerido.' });
-        }
-
-        const personajes = await prisma.personajes.findMany({
-            where: {
-                nombre: String(nombre)
-            }
-        })
-
-        if (personajes.length === 0) {
-            return res.status(422).json({
-                error: `No se encontraron personajes con el nombre ${nombre}`
-            });
-        }
-
-        res.json(personajes)
-    } catch (error) {
-        // Otros errores de la base de datos
-        res.status(500).json({ 
-            error: error.message
-        });
-    }
-};
-
 const createPersonaje = async (req, res) => {
     const { nombre, fuerza, fecha_nacimiento, objeto } = req.body;
 
@@ -113,15 +84,9 @@ const createPersonaje = async (req, res) => {
         
         res.status(201).json(personajes);
     } catch (error) { 
-        if (error instanceof prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-            res.status(409).json({
-                error: 'La relación diplomática ya existe.',
-            });
-        } else {
             res.status(500).json({
-                error: error.message,
+                error: 'Se produjo un error al crear el personaje.',
             });
-        }
     }
 }
 
@@ -234,7 +199,6 @@ const deletePersonajeById = async (req, res) => {
 const PersonajesController = {
     getPersonajes,
     getPersonajeById,
-    getPersonajeByNombre,
     createPersonaje,
     updatePersonaje,
     deletePersonajeById
