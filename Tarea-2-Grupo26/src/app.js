@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import PersonajesController from './controllers/PersonajesController.js';
 import KartsController from './controllers/KartsController.js';
 import TrabajosController from './controllers/TrabajosController.js';
@@ -6,10 +7,10 @@ import Personaje_tiene_trabajoController from './controllers/Personaje_tiene_tra
 import ReinosController from './controllers/Reinos.js';
 import DiplomaciasController from './controllers/DiplomaciasConstroller.js';
 import PersonajeHabitaReino from './controllers/PersonajeHabitaReino.js'
-import morgan from 'morgan';
 import personaje_tiene_trabajoController from './controllers/Personaje_tiene_trabajoController.js';
 import DefensasController from './controllers/DefensasController.js';
 import Defensas_del_reino_Controller from './controllers/Defensas_del_reino_Controller.js';
+import EndPointController from './controllers/EndPointsController.js';
 
 const ENV = process.env;
 const app = express();
@@ -78,6 +79,13 @@ app.get('/defensas_del_reino/:id', Defensas_del_reino_Controller.getReinoDefensa
 app.post('/defensas_del_reino/:id', Defensas_del_reino_Controller.createReinoDefensa);
 app.put('/defensas_del_reino/:idDefensa/:idreino', Defensas_del_reino_Controller.actualizarFechaComienzo);
 app.delete('/defensas_del_reino/:idDefensa/:idReino', Defensas_del_reino_Controller.eliminarAsignacionReino);
+
+// endpoints
+app.get('/api/top5personajesConMasFuerza', EndPointController.getMasFuerte);
+app.get('/api/personajeConMasKarts', EndPointController.getPersonajeMasKarts);
+app.get('/api/cantidadHabitantes/:id', EndPointController.getCantidadHabitantes);
+app.get('/api/gobernante', EndPointController.getGobernantes);
+app.get('/api/gobernante/:id', EndPointController.getGobernantes);
 
 //==========================================================//
 app.get('/', (req, res) => {
